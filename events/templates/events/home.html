@@ -1,0 +1,81 @@
+{% extends 'base.html' %}
+{% block content %}
+    <div class="gradient-container">
+        <h1 class="hero-title">Discover Free <br> Local Events</h1>
+            <form method="GET" action="{% url 'all_events'%}" class="search-container">
+                <input type="text" name="q" placeholder="Find free concerts, events, and more...">
+                <input type="submit" value="Find">
+            </form>
+    </div>
+    <div class="event-display">
+        <div class="events-tonight-display">
+            <h3 class="event-type-title">Events Tonight</h3>
+            {% if events_tonight %}
+                <div class="event-card-display">
+                {% for event in events_tonight %}
+                    <a href="{% url 'event_detail' event.id %}" class="event-card">
+                        <img src="{{ event.cover_photo }}" alt="Event cover photo">
+                        <h5 class="event-card-title">
+                            {% if event.title|length > 20 %}
+                                {{ event.title|slice:":20" }}...
+                            {% else %}
+                                {{ event.title }}
+                            {% endif %}
+                        </h5>
+                        <p class="event-card-location">{{event.location}}</p>
+                    </a>
+                {% endfor %}
+                </div>
+                <a href="{% url 'all_events' %}" class="view-more">View More</a>
+            {% else %}
+            <p>No events to show</p>
+            {% endif %}
+        </div>
+        <div class="crowd-favorites-display">
+            <h3 class="event-type-title">Crowd Favorites</h3>
+            {% if crowd_favorites %}
+                <div class="event-card-display">
+                {% for event in crowd_favorites %}
+                    <a href="{% url 'event_detail' event.id %}" class="event-card">
+                        <img src="{{ event.cover_photo }}" alt="Event cover photo">
+                        <h5 class="event-card-title">
+                            {% if event.title|length > 20 %}
+                                {{ event.title|slice:":20" }}...
+                            {% else %}
+                                {{ event.title }}
+                            {% endif %}
+                        </h5>
+                        <p class="event-card-location">{{event.location}}</p>
+                    </a>
+                {% endfor %}
+                </div>
+                <a href="{% url 'all_events' %}" class="view-more">View More</a>
+            {% else %}
+            <p>No events to show</p>
+            {% endif %}
+        </div>
+        <div class="family-friendly-display">
+            <h3 class="event-type-title">Family Friendly</h3>
+            {% if family_events %}
+                <div class="event-card-display">
+                {% for event in family_events %}
+                    <a href="{% url 'event_detail' event.id %}" class="event-card">
+                        <img src="{{ event.cover_photo }}" alt="Event cover photo">
+                        <h5 class="event-card-title">
+                            {% if event.title|length > 20 %}
+                                {{ event.title|slice:":20" }}...
+                            {% else %}
+                                {{ event.title }}
+                            {% endif %}
+                        </h5>
+                        <p class="event-card-location">{{ event.location }}</p>
+                    </a>
+                {% endfor %}
+                </div>
+                <a href="{% url 'all_events' %}" class="view-more">View More</a>
+            {% else %}
+            <p>No events to show</p>
+            {% endif %}
+        </div>
+    </div>
+{% endblock %}

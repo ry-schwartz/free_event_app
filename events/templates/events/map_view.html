@@ -1,0 +1,46 @@
+{% extends 'base.html' %}
+{% block content %}
+<h1 class="map-heading">Events Map</h1>
+<div class="map-container">
+    <div id="map" class="map-display" style="height: 600px;"></div>
+</div>
+
+{{ all_events|json_script:"events_data" }}
+
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        var events = JSON.parse(document.getElementById('events_data').textContent);
+        console.log('Events Data:', events);
+
+        var userLatitude = parseFloat("{{ latitude|default:47.6062 }}");
+        var userLongitude = parseFloat("{{ longitude|default:-122.3321 }}");
+
+        // Initialize the map
+        var map = L.map('map').setView([userLatitude, userLongitude], 9);
+
+        // Add the tile layer
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '© OpenStreetMap contributors'
+        }).addTo(map);
+
+        // Add markers to the map
+        events.forEach(function(event) {
+            if (event.latitude && event.longitude) {
+                var marker = L.marker([event.latitude, event.longitude]).addTo(map);
+                var eventDetailUrl = `/event/${event.id}`;  // Construct URL manually
+                marker.bindPopup(`
+                    <div style="background-color: #428CD4; padding: 10px; border-radius: 5px; text-align: center; color: white;">
+                        <b><a href="${eventDetailUrl}" style="color: #EA4492; text-decoration: none;">${event.title}</a></b><br>
+                        ${event.location}
+                    </div>
+                `);
+                console.log(`Added marker for event: ${event.title}`);
+            } else {
+                console.log(`Skipping event with missing coordinates: ${event.title}`);
+            }
+        });
+    });
+</script>
+<script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"/>
+{% endblock %}

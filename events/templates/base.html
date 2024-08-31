@@ -1,0 +1,44 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}VibeFind | Free Event Finder{% endblock %}</title>
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Kanit:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+</head>
+<body>
+    <header>
+        <nav class="{% if request.path != '/' %}special-nav{% endif %}">
+            <h2 class="nav-heading nav-item-2 {% if request.path != '/' %}special-nav-item{% endif %}">VibeFind</h2>
+            <ul class="nav-link-list {% if request.path != '/' %}special-nav-item{% endif %}">
+                <a href="{% url 'home' %}" class="nav-link {% if request.path != '/' %}special-nav-item{% endif %}">
+                    <li class="nav-item {% if request.path != '/' %}special-nav-item{% endif %}">Home</li>
+                </a>
+                <a href="{% url 'all_events' %}" class="nav-link {% if request.path != '/' %}special-nav-item{% endif %}">
+                    <li class="nav-item {% if request.path != '/' %}special-nav-item{% endif %}">Events</li>
+                </a>
+                <a href="{% url 'map_view' %}" class="nav-link {% if request.path != '/' %}special-nav-item{% endif %}">
+                    <li class="nav-item {% if request.path != '/' %}special-nav-item{% endif %}">Map</li>
+                </a> 
+            </ul>
+        </nav>
+    </header>   
+    <main>
+        {% block content %}
+        {% endblock %}
+    </main>
+    <footer>
+        <p class="nav-item-2">VibeFind 2024&copy;</p>
+        <ul class="nav-link-list">
+            <a href="{% url 'home' %}" class="nav-link"><li class="nav-item">Home</li></a>
+            <a href="{% url 'all_events' %}" class="nav-link"><li class="nav-item">Events</li></a>
+            <a href="{% url 'map_view' %}" class="nav-link"><li class="nav-item">Map</li></a> 
+        </ul>
+    </footer>
+</body>
+</html>

@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="category-container">
+    <h2 class="category-heading">Categories</h2>
+    <div class="category-buttons">
+        <a href="{% url 'all_events' %}" class="category-button">All</a>
+        <a href="{% url 'all_events' %}?category=Music" class="category-button">Music</a>
+        <a href="{% url 'all_events' %}?category=Sports" class="category-button">Sports</a>
+        <a href="{% url 'all_events' %}?category='Arts & Theatre'" class="category-button">Art</a>
+    </div>
+</div>
+<div class="all-events-container">
+    <h2 class="event-type-title grid-title">Events</h2>
+    {% for event in page_obj %}
+    <a href="{% url 'event_detail' event.id %}">
+        <div class="event-card">
+            <img src="{{ event.cover_photo }}" alt="Event cover photo">
+            <h5 class="event-card-title">
+                {% if event.title|length > 20 %}
+                    {{ event.title|slice:":20" }}...
+                {% else %}
+                    {{ event.title }}
+                {% endif %}
+            </h5>
+            <p class="event-card-location">{{event.location}}</p>
+        </div>
+    </a>
+    {% endfor %}
+    <div class="pagination-container">
+        <ul class="pagination">
+            {% for page_num in page_obj.paginator.page_range %}
+                {% if page_obj.number == page_num %}
+                    <li class="current-page">
+                        <span class="page-link current-link" href="?page={{ page_num }}{% if search_query %}&search={{ search_query }}{% endif %}{% if category_filter %}&category={{ category_filter }}{% endif %}">{{ page_num }}</span>
+                    </li>
+                {% else %}
+                    <li class="page-number">
+                        <a class="page-link change-link" href="?page={{ page_num }}{% if search_query %}&search={{ search_query }}{% endif %}{% if category_filter %}&category={{ category_filter }}{% endif %}">{{ page_num }}</a>
+                    </li>
+                {% endif %}
+            {% endfor %}
+        </ul>
+    </div>
+</div>
+{% endblock %}
